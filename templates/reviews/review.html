@@ -1,0 +1,103 @@
+<style>
+    .review {
+        
+        width: 75vw;
+    background-color: #1f1f1f;
+    padding: 30px;
+    margin-top: 40px;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(255, 0, 100, 0.2);
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.review h3 {
+    color: #ffda77;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+.review-item {
+    border-bottom: 1px solid #333;
+    padding: 15px 0;
+    padding-left: 10px;
+}
+
+.review-item:last-child {
+    border-bottom: none;
+}
+
+.review-item strong {
+    color: #ff2e63;
+    font-size: 1.1rem;
+}
+
+.review-item p {
+    margin: 5px 0 0 0;
+    font-size: 1rem;
+    color: #ddd;
+    
+}
+
+.no-reviews {
+    font-style: italic;
+    color: #999;
+}
+.reviewt {
+    width: 69vw;
+    
+    background-color: #1f1f1f;
+    border-radius: 10px;
+    box-shadow: 0 0 12px rgba(255, 0, 100, 0.2);
+    border:1px solid #ddd;
+}
+.write-review-button {
+        background-color: #ff2e63;
+        color: white;
+        padding: 12px 28px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        
+        cursor: pointer;
+        transition: background 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        position: absolute;
+        left: 74.5%;
+    }
+    
+    .write-review-button:hover {
+        background-color:  #000000;
+    }
+
+    
+</style>
+<div class="review">
+    <a href="{% url 'submit_review' movie.slug %}">
+        <button class="write-review-button">Write a Review</button>
+    </a>
+    <h3>Reviews</h3>
+    <div class="reviewt">
+        {% for review in reviews %}
+        <div class="review-item">
+            <strong>{{ review.user.username }}</strong>
+            <p>{{ review.review_text }} </p><p>⭐ {{ rating|floatformat:1 }} / 10</p>
+        </div>
+    {% empty %}
+    
+        <p class="no-reviews">No reviews yet. Be the first to review!</p>
+    
+        
+            
+        
+        {% endfor %}
+        
+    </div>
+    
+    
+
+</div>
+
+

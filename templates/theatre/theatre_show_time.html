@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    
+    .navbar {
+        background-color: #1f1f1f !important;
+        border-bottom: 1px solid #333;
+    }
+
+    .navbar-brand {
+        color: #ff2e63 !important;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .navbar-nav .nav-link {
+        color: #fff !important;
+    }
+
+    .navbar-nav .nav-link.active {
+        color: #ffda77 !important;
+    }
+
+    .form-control {
+        width: 600px;
+        border-radius: 20px;
+        background-color: #1f1f1f;
+        color: white;
+        border: 1px solid #444;
+    }
+
+    .form-control::placeholder {
+        color: #bbb;
+    }
+
+    .form-control:hover,
+    .form-control:focus {
+        box-shadow: 0 0 5px rgba(255, 46, 99, 0.5);
+        border-color: #ff2e63;
+    }
+
+    .btn-outline-success {
+        border-radius: 20px;
+        background-color: #ff2e63;
+        color: white;
+        border: none;
+    }
+
+    .btn-outline-success:hover {
+        background-color: #e6004c;
+    }
+    
+    .dropdown-menu {
+        background-color: #1f1f1f;
+        border: 1px solid #333;
+    }
+
+    .dropdown-item {
+        color: #fff;
+        transition: background-color 0.3s ease;
+    }
+
+    .dropdown-item:hover {
+        background-color: #ff2e63;
+        color: #fff;
+    }
+
+    .nav-link.dropdown-toggle {
+        color: #ffda77 !important;
+    }
+
+    .nav-link.dropdown-toggle:hover {
+        color: #fff !important;
+    }
+
+
+
+
+
+
+    body {
+        background-color: #121212;
+        color: #fff;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .theatre-container {
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .theatre-card {
+        background-color: #1f1f1f;
+        border: 1px solid #2b2b2b;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+
+    .theatre-name {
+        font-size: 1.3rem;
+        font-weight: bold;
+        color: #ffda77;
+        margin-bottom: 15px;
+    }
+
+    .showtimes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .showtime-btn {
+        background-color: #1e1e1e;
+        border: 1px solid #444;
+        border-radius: 8px;
+        padding: 8px 16px;
+        color: #00e676;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .showtime-btn:hover {
+        background-color: #ff2e63;
+        color: white;
+        border-color: #ff2e63;
+    }
+    .movie-info h2 {
+        font-size: 2.5rem;
+        margin-top: 10px;
+        padding-left: 28px;
+        color: #ffda77;
+    }
+</style>
+
+
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'movies_list' %}">MOVIEBoOKer</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'movies_list' %}">Home</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Categories
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Comedy</a></li>
+                        <li><a class="dropdown-item" href="#">Thriller</a></li>
+                        <li><a class="dropdown-item" href="#">Drama</a></li>
+                        <li><a class="dropdown-item" href="#">Horror</a></li>
+                        <li><a class="dropdown-item" href="#">Romance</a></li>
+                        <li><a class="dropdown-item" href="#">Sci-Fi</a></li>
+                        <li><a class="dropdown-item" href="#">Fantasy</a></li>
+                    </ul>
+                </li>
+            </ul>
+            
+        </div>
+    </div>
+</nav>
+
+
+
+<div class="movie-info">
+    <h2>{{ m.title }}</h2>
+    {% include 'bookings/calendar_widget.html' %}
+<div class="theatre-container">
+    {% for showtimes in theatre_showtimes %}
+  <div class="theatre-card">
+    {% with theatre=showtimes.0.theatre %}
+      <div class="theatre-name">{{ theatre.name }}</div>
+      <p>{{ theatre.address }}</p>
+    {% endwith %}
+    <div class="showtimes">
+      {% for s in showtimes %}
+        <a href="{% url 'seating' slug=m.slug showtime_id=s.id %}">
+          <button class="showtime-btn">{{ s.show_time|date:"h:i A" }}</button>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% endfor %}
+  
+</div>
+</div>
+{% endblock %}

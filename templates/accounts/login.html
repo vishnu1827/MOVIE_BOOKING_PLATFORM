@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load socialaccount %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %} Login {% endblock %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    
+    <style>
+        body {
+            background-color: #121212;
+            background-image: url("{% static 'img/mov.png' %}");
+            background-repeat: no-repeat;
+            background-position: right;
+            color: #fff;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .card {
+            background-color: #1f1f1f;
+            color: #fff;
+            width: 26rem;
+            margin: 8% auto;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(255, 46, 99, 0.2);
+            border: 1px solid #2b2b2b;
+        }
+
+        h3 {
+            color: #ffda77;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        input, select, textarea {
+            background-color: #2a2a2a !important;
+            border: 1px solid #444 !important;
+            color: white !important;
+            border-radius: 8px !important;
+            padding: 10px !important;
+        }
+
+        input:focus {
+            box-shadow: 0 0 5px rgba(255, 46, 99, 0.5) !important;
+            border-color: #ff2e63 !important;
+        }
+
+        .btn-primary {
+            background-color: #ff2e63 !important;
+            border: none !important;
+            border-radius: 10px !important;
+            font-size: 18px !important;
+            padding: 10px !important;
+            color: #fff !important;
+}
+
+        .btn-primary:hover {
+            background-color: #e6004c;
+        }
+
+        .or {
+            text-align: center;
+            color: #999;
+            font-size: 16px;
+            margin-top: 15px;
+        }
+
+        .already {
+            text-align: center;
+            margin-top: 15px;
+            color: #999;
+        }
+        img{
+            width: 230px;
+            height: 60px;
+            margin: 0 auto;
+            display: block;
+        }
+    </style>
+
+
+    
+    <div class="card">
+        <div class="title text-center mt-2"><h3>Login</h3></div>
+            <div class="card-body">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    {% load crispy_forms_tags %}
+                    {{form|crispy}}
+                    <br>
+                    <input type="submit" class="btn btn-primary w-100" value="Log In">
+                </form>
+                
+                <p class="already">Don't have an account?<a href="{% url 'register' %}">Register</a></p>
+                <p class="or">----------------or----------------</p>    
+                <a href="{% provider_login_url 'google' %}">
+                    <img src="{% static 'img/web_light_sq_SU@3x.png' %}" alt="" srcset=""></a>
+                    
+            </div>
+        </div>
+
+{% endblock %}
+   
+

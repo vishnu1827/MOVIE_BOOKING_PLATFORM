@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Payment Status</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f2f2f2;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background-color: #ffffff;
+      border-radius: 16px;
+      padding: 30px 25px;
+      width: 360px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      animation: fadeIn 0.4s ease-in-out;
+    }
+
+    .icon-circle {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+
+    .icon-circle.success {
+      background-color: #4CAF50;
+    }
+
+    .icon-circle.cancel {
+      background-color: #f44336;
+    }
+
+    .icon-circle svg {
+      fill: white;
+      width: 40px;
+      height: 40px;
+    }
+
+    .modal-content h2 {
+      color: #333;
+      font-size: 24px;
+      margin: 0 0 10px;
+    }
+
+    .modal-content p {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 25px;
+    }
+
+    .close-btn {
+      background-color: #555;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 24px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .close-btn:hover {
+      background-color: #333;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: scale(0.95);}
+      to {opacity: 1; transform: scale(1);}
+    }
+  </style>
+</head>
+<body>
+
+
+
+<div id="cancelModal" class="modal">
+  <div class="modal-content">
+    <div class="icon-circle cancel">
+      <!-- Cross Icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M18.3 5.71a1 1 0 00-1.41 0L12 10.59 7.11 5.7a1 1 0 00-1.41 1.41L10.59 12l-4.89 4.89a1 1 0 101.41 1.41L12 13.41l4.89 4.89a1 1 0 001.41-1.41L13.41 12l4.89-4.89a1 1 0 000-1.4z"/>
+      </svg>
+    </div>
+    <h2>Payment Canceled</h2>
+    <p>Your payment was not completed.</p>
+    <button class="close-btn" onclick="closeModal('cancelModal')">Close</button>
+  </div>
+</div>
+
+<script>
+  function showSuccessModal() {
+    document.getElementById('successModal').style.display = 'flex';
+  }
+
+  function showCancelModal() {
+    document.getElementById('cancelModal').style.display = 'flex';
+  }
+
+  function closeModal(id) {
+    document.getElementById(id).style.display = 'none';
+  }
+
+  window.onload = function () {
+  
+  };
+</script>
+
+</body>
+</html>

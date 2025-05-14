@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load socialaccount %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %} Register {% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #121212;
+        
+        background-repeat: no-repeat;
+        background-position: right;
+        color: #fff;
+        font-family: 'Segoe UI', sans-serif;
+    }
+    .form-text {
+    color: #ccc !important;
+}
+
+
+    .card {
+        background-color: #1f1f1f;
+        color: #fff;
+        width: 35%;
+        margin: 5% auto;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(255, 46, 99, 0.3);
+        border: 1px solid #2b2b2b;
+    }
+
+    h2 {
+        text-align: center;
+        font-weight: bold;
+        color: #ffda77;
+    }
+
+    input, select, textarea {
+        background-color: #2a2a2a !important;
+        border: 1px solid #444 !important;
+        color: white !important;
+        border-radius: 8px !important;
+        padding: 10px !important;
+    }
+
+    input:focus {
+        box-shadow: 0 0 5px rgba(255, 46, 99, 0.5) !important;
+        border-color: #ff2e63 !important;
+    }
+
+    .btn-primary {
+        width: 100%;
+        background-color: #ff2e63;
+        border: none;
+        border-radius: 20px;
+        font-size: 18px;
+        padding: 10px;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-primary {
+            background-color: #ff2e63 !important;
+            border: none !important;
+            border-radius: 10px !important;
+            font-size: 18px !important;
+            padding: 10px !important;
+            color: #fff !important;
+    }
+
+    .btn-primary:hover {
+        background-color: #e6004c !important;
+        
+    }
+
+    .logo {
+        width: 44%;
+        height: 45px;
+        margin: 20px auto;
+        display: block;
+        transition: all 0.5s ease;
+    }
+
+    .logo:hover {
+        cursor: pointer;
+        transform: scale(1.05);
+    }
+
+    .already {
+        text-align: center;
+        margin-top: 15px;
+        color: #ccc;
+    }
+
+    .already a {
+        color: #ffda77;
+        text-decoration: none;
+    }
+
+    .already a:hover {
+        text-decoration: underline;
+    }
+
+    .or {
+        text-align: center;
+        color: #999;
+        margin: 20px 0;
+        font-size: 16px;
+    }
+
+</style>
+
+<body>
+    <div class="card">
+        <div class="card-body">
+            <h2>REGISTER</h2><br>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ registerform|crispy }}
+                <br>
+                <input class="btn btn-primary" type="submit" value="Register"><br>
+            </form>
+            <p class="already">Already have an account? <a href="{% url 'login' %}">Login</a></p>
+            <p class="or">----------------or----------------</p>
+            <a href="{% provider_login_url 'google' %}">
+                <img class="logo" src="{% static 'img/web_light_sq_SU@3x.png' %}" alt="Google Sign-In">
+            </a>
+        </div>
+    </div>
+</body>
+{% endblock %}

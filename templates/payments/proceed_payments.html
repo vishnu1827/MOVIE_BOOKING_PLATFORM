@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #121212;
+        color: #fff;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 20px;
+        background-color: #1f1f1f;
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    h2.text-center {
+        text-align: center;
+        color: #ffda77;
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+    }
+
+    .card {
+        background-color: #1e1e1e;
+        border: 1px solid #333;
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+
+    .card h4,
+    .card p,
+    .card ul,
+    .card h5 {
+        color: #ededed;
+    }
+
+    .card hr {
+        border-top: 1px solid #444;
+    }
+
+    .card h5 {
+        color: #ffda77;
+        margin-top: 20px;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    li {
+        padding: 4px 0;
+    }
+
+    strong {
+        color: #ffda77;
+    }
+
+    h4 strong {
+        color: #fff;
+    }
+
+    .btn-success {
+        background-color: #ff2e63;
+        border: none;
+        padding: 12px 20px;
+        font-size: 18px;
+        margin-top: 20px;
+        border-radius: 10px;
+        width: 100%;
+        transition: background 0.3s ease;
+    }
+
+    .btn-success:hover {
+        background-color: #e6004c;
+    }
+</style>
+
+<div class="container">
+    <h2 class="text-center">Confirm Your Booking</h2>
+    <div class="card mt-4 p-4">
+        <h4 style="font-size: 40px; color: #ffffff;">{{ showtime.movie.title }}</h4>
+        <p><strong>Theater:</strong> {{ showtime.theatre.name }}</p>
+        <p><strong>Screen:</strong> {{ showtime.screen_number }}</p>
+        <p><strong>Showtime:</strong> {{ showtime.show_time }}</p>
+
+        <hr>
+
+        <h5>Tickets:</h5>
+        <ul>
+            {% for ticket in tickets %}
+                <li>Seat: {{ ticket }}</li>
+            {% endfor %}
+        </ul>
+
+        <hr>
+
+        <p><strong>Ticket Price:</strong> ₹{{ total_amount }}</p>
+        <p><strong>Convenience Fee:</strong> ₹{{ convenience_fee }}</p>
+        <h4><strong>Total Amount:</strong> ₹{{ subtotal }}</h4>
+        <form action="{% url 'payment' booking.id %}" method="POST">
+            {% csrf_token %}">
+        <button type="submit" class="btn btn-success">Proceed to Payment</button>
+    </form>
+    </div>
+</div>
+{% endblock %}

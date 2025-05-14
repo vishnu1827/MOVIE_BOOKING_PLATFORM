@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #202020;
+        color: #fff;
+        font-family: 'Segoe UI', sans-serif;
+    }
+    .review-container {
+        max-width: 700px;
+        margin: 50px auto;
+        background-color: #1f1f1f;
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: 0 0 15px rgba(255, 46, 99, 0.2);
+    }
+
+    .review-container h2 {
+        color: #ffda77;
+        text-align: center;
+        margin-bottom: 30px;
+        font-weight: bold;
+    }
+
+    .review-container label {
+        display: block;
+        color: #ddd;
+        margin-top: 15px;
+        margin-bottom: 5px;
+        font-weight: 500;
+    }
+
+    .review-container input,
+    .review-container textarea {
+        width: 100%;
+        padding: 12px;
+        border-radius: 10px;
+        background-color: #2a2a2a;
+        border: 1px solid #444;
+        color: white;
+        font-size: 14px;
+    }
+
+    .review-container input:focus,
+    .review-container textarea:focus {
+        outline: none;
+        border-color: #ff2e63;
+        box-shadow: 0 0 5px rgba(255, 46, 99, 0.5);
+    }
+
+    .review-container button {
+        margin-top: 25px;
+        width: 100%;
+        background-color: #ff2e63;
+        color: white;
+        border: none;
+        padding: 12px;
+        font-size: 16px;
+        border-radius: 10px;
+        transition: background-color 0.3s ease;
+    }
+
+    .review-container button:hover {
+        background-color: #e6004c;
+    }
+</style>
+
+<div class="review-container">
+    <h2>Leave a Review for "{{ movie.title }}"</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <label for="rating">Rating (0.0 - 10.0):</label>
+        <input type="number" name="rating" step="0.1" min="0" max="10" required>
+
+        <label for="review_text">Your Review:</label>
+        <textarea name="review_text" rows="5" required></textarea>
+
+        <button type="submit">Submit Review</button>
+    </form>
+</div>
+{% endblock %}

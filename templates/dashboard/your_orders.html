@@ -1,0 +1,225 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load tz %}
+{% now "U" as current_timestamp %}
+
+{% block content %}
+<!-- Include Toastify CSS and JS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/Toastify/1.12.0/Toastify.min.css" rel="stylesheet">
+
+<style>
+    .navbar {
+        background-color: #1f1f1f !important;
+        border-bottom: 1px solid #333;
+    }
+
+    .navbar-brand {
+        color: #ff2e63 !important;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .navbar-nav .nav-link {
+        color: #fff !important;
+    }
+
+    .navbar-nav .nav-link.active {
+        color: #ffda77 !important;
+    }
+
+    .form-control {
+        width: 600px;
+        border-radius: 20px;
+        background-color: #1f1f1f;
+        color: white;
+        border: 1px solid #444;
+    }
+
+    .form-control::placeholder {
+        color: #bbb;
+    }
+
+    .form-control:hover,
+    .form-control:focus {
+        box-shadow: 0 0 5px rgba(255, 46, 99, 0.5);
+        border-color: #ff2e63;
+    }
+
+    .btn-outline-success {
+        border-radius: 20px;
+        background-color: #ff2e63;
+        color: white;
+        border: none;
+        padding-top: 2px;
+    }
+
+    .btn-outline-success:hover {
+        background-color: #e6004c;
+    }
+
+    body {
+        background-color: #121212;
+        color: #fff;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .card-body {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        background-color: #1e1e1e;
+        color: #fff;
+    }
+
+    .movie-poster {
+        flex: 0 0 150px;
+    }
+
+    .movie-poster img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+    }
+
+    .movie-details {
+        flex: 1;
+    }
+
+    .card {
+        background-color: #1e1e1e;
+        border-radius: 12px;
+        padding: 20px;
+        border: 1px solid #333;
+        color: #fff;
+    }
+
+    .card-header {
+        background-color: #1f1f1f;
+        color: #faf9f6;
+        font-weight: bold;
+        padding: 15px;
+        border-bottom: #818181 1px solid;
+    }
+
+    .card-body p {
+        color: #ffffff;
+        font-size: 0.95rem;
+    }
+
+    .card-body .movie-details strong {
+        color: #ffda77;
+    }
+
+    h2 {
+        color: #ffda77;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    a {
+        color: #ffda77;
+    }
+
+    a:hover {
+        color: #ff2e63;
+    }
+</style>
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'movies_list' %}">MOVIEBoOKer</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'movies_list' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'your_orders' %}">Your Orders</a>
+                </li>
+            </ul>
+            <form class="d-flex" role="search" method="get" action="{% url 'movies_list' %}">
+                <input class="form-control me-2" type="search" name="q" placeholder="Search movies..." value="{{ search_query }}">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <h2 class="mb-4">Your Orders</h2>
+
+    {% if messages %}
+        <div class="mb-3">
+            {% for message in messages %}
+                <script>
+                    Toastify({
+                        text: "{{ message }}",
+                        duration: 3000,
+                        backgroundColor: "{{ message.tags }}" === "success" ? "green" : "red",
+                        close: true,
+                        position: "top-center",
+                    }).showToast();
+                </script>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% for payment, data in tickets.items %}
+    <div class="card mb-4">
+        <div class="card-header">
+            <strong>Payment ID:</strong> {{ payment.id }} |
+            <strong>Amount:</strong> ₹{{ payment.amount }} |
+            <strong>Status:</strong> {{ payment.status|title }} |
+            <strong>Date:</strong> {{ payment.booking.booking_time|date:"M d, Y H:i" }}
+        </div>
+        <div class="card-body">
+            <!-- Movie Poster -->
+            <div class="movie-poster mb-3 mr-4">
+                {% if payment.booking.showtime and payment.booking.showtime.movie and payment.booking.showtime.movie.movie_image %}
+                    <img src="{{ payment.booking.showtime.movie.movie_image.url }}" alt="{{ payment.booking.showtime.movie.title }}" class="img-fluid">
+                {% else %}
+                    <p><em>Movie poster not available</em></p>
+                {% endif %}
+            </div>
+
+            <!-- Movie Details -->
+            <div class="movie-details">
+                {% if payment.booking.showtime and payment.booking.showtime.movie %}
+                    <p><strong>Movie:</strong> {{ payment.booking.showtime.movie.title }}</p>
+                    {% if payment.booking.showtime.show_time %}
+                        <p><strong>Showtime:</strong> {{ payment.booking.showtime.show_time|date:"M d, Y H:i" }}</p>
+                    {% else %}
+                        <p><strong>Showtime:</strong> Not available</p>
+                    {% endif %}
+                {% else %}
+                    <p><strong>Movie:</strong> Not available</p>
+                {% endif %}
+
+                <p><strong>Seats:</strong>
+                    {% for seat in data.seats %}
+                        {{ seat.seat.row_label }}{{ seat.seat.seat_number }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+
+                {% if data.can_cancel %}
+                    <form action="{% url 'cancel_ticket' payment.booking.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-danger mt-3">Cancel Booking</button>
+                    </form>
+                {% else %}
+                    <p class="text-warning">Cancellation window has passed.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Toastify/1.12.0/Toastify.min.js"></script>
+{% endblock %}
